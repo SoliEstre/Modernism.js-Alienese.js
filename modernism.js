@@ -31,7 +31,7 @@ SOFTWARE.
 // Collections of bypass for process codes takes be inline,
 // and monkey patching like as modern languages.
 // 
-// v0.2.2 / release 2025.03.24
+// v0.2.3 / release 2025.04.08
 // 
 // Author: Estre Soliette
 // Established: 2025.01.05
@@ -127,7 +127,7 @@ const forof = (from, work = v => { return false; }) => {
     for (const v of from) if (work(v)) break;
 }
 const forkv = (from, work = (k, v) => { return false; }) => {
-    for (const [k, v] of from) if (work(k, v)) break;
+    for (const [k, v] of Object.entries(from)) if (work(k, v)) break;
 }
 
 const whileIn = function (cond = function (self) { return true; }, work = function (self, count) { return false; }, self = {}) {
@@ -479,6 +479,8 @@ defineProperty(Object, "forValues", function (work = value => { return false; })
 defineProperty(Object, "forLooks", function (work = value => { return false; }) { return forof(this.it.looks, work); });
 defineProperty(Object, "forEntries", function (work = (key, value) => { return false; }) { return forkv(this.it.entire, work); });
 defineProperty(Object, "forEntire", function (work = (key, value) => { return false; }) { return forkv(this.it.entire, work); });
+
+defineProperty(Object, "keyOf", function (value) { for (const [key, val] of this.it.entire) if (val === value) return key; return undefined; });
 
 defineProperty(Object, "copy", function (dataOnly = true, primitiveOnly = false, recusive = true) { return copy(this, dataOnly, primitiveOnly, recusive); });
 defineGetterAndSetter(Object, "mock", function () { return mock(this); });
