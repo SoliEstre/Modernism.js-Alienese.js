@@ -32,7 +32,7 @@ SOFTWARE.
 // This patch aims to create smaller (quicker) and more concise (lighter) JavaScript code.
 // It makes the code more implicit and serves as an alternative to obfuscation.
 // 
-// v0.3 / release 2025.04.25
+// v0.3.1 / release 2025.06.30
 // 
 // * Must be loaded modernism.js before this script.
 // 
@@ -381,3 +381,16 @@ const l = cm;
 const s = " ";
 const i = "#";
 const d = ".";
+
+const cr = "\r";
+const lf = "\n";
+const crlf = cr + lf;
+const lfcr = lf + cr;
+const tab = "\t";
+
+const ecr = "\\r";
+const elf = "\\n";
+const ecrlf = ecr + elf;
+const elfcr = elf + ecr;
+const etab = "\\t";
+
