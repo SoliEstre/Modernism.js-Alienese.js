@@ -1,3 +1,11 @@
+# Modernism & Alienese Monorepo
+
+Packages:
+*   **[Modernism.js](./packages/modernism/README.md)**
+*   **[Alienese.js](./packages/alienese/README.md)**
+
+---
+
 ## Korean
 
 # Modernism.js & Alienese.js

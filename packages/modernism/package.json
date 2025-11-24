@@ -1,0 +1,11 @@
+{
+    "name": "modernism",
+    "version": "0.4.1",
+    "description": "Modernism.js - Estre Modernism javscript patch",
+    "main": "modernism.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "Estre Soliette",
+    "license": "MIT"
+}

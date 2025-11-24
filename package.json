@@ -1,0 +1,14 @@
+{
+  "name": "modernism-alienese-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Monorepo for Modernism and Alienese libraries",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Estre Soliette",
+  "license": "MIT"
+}
