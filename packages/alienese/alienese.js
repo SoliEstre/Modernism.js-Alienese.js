@@ -32,7 +32,7 @@ SOFTWARE.
 // This patch aims to create smaller (quicker) and more concise (lighter) JavaScript code.
 // It makes the code more implicit and serves as an alternative to obfuscation.
 // 
-// v0.4.3 / release 2025.11.25
+// v0.4.4 / release 2025.11.25
 // 
 // * Must be loaded modernism.js before this script.
 // 
@@ -46,9 +46,9 @@ if (typeof require !== 'undefined' && typeof module !== 'undefined') {
     try { require("modernism"); } catch (e) { }
 }
 
-let _g = _global ?? (typeof globalThis !== 'undefined') ? globalThis : (typeof window !== 'undefined' ? window : global);
+let _gb = _global ?? (typeof globalThis !== 'undefined') ? globalThis : (typeof window !== 'undefined' ? window : global);
 let dfg = defineGlobal ?? ((name, value) => {
-    Object.defineProperty(_g, name, {
+    Object.defineProperty(_gb, name, {
         value: value,
         writable: false,
         configurable: false,
@@ -62,23 +62,23 @@ dfg("N", NULL);
 dfg("T", TRUE);
 dfg("F", FALSE);
 
-dfg("u", _g.undefined);
-dfg("n", _g.null);
-dfg("t", _g.true);
-dfg("f", _g.false);
+dfg("u", _gb.undefined);
+dfg("n", _gb.null);
+dfg("t", _gb.true);
+dfg("f", _gb.false);
 
 // end point assigner constant
-dfg("eoo", _g.u);
-dfg("eoa", _g.u);
+dfg("eoo", _gb.u);
+dfg("eoa", _gb.u);
 
 // prototype of primitive types alias constant
-dfg("FNC", _g.FUNCTION);
-dfg("BLE", _g.BOOLEAN);
-dfg("STR", _g.STRING);
-dfg("SYM", _g.SYMBOL);
-dfg("NUM", _g.NUMBER);
-dfg("BIG", _g.BIGINT);
-dfg("OBJ", _g.OBJECT);
+dfg("FNC", _gb.FUNCTION);
+dfg("BLE", _gb.BOOLEAN);
+dfg("STR", _gb.STRING);
+dfg("SYM", _gb.SYMBOL);
+dfg("NUM", _gb.NUMBER);
+dfg("BIG", _gb.BIGINT);
+dfg("OBJ", _gb.OBJECT);
 
 dfg("fun", Function);
 dfg("ble", Boolean);
@@ -89,13 +89,13 @@ dfg("big", BigInt);
 dfg("obj", Object);
 
 // class names of primitive types constant
-dfg("FN", _g._FUNCTION);
-dfg("BL", _g._BOOLEAN);
-dfg("ST", _g._STRING);
-dfg("SY", _g._SYMBOL);
-dfg("NO", _g._NUMBER);
-dfg("BI", _g._BIG_INT);
-dfg("OJ", _g._OBJECT);
+dfg("FN", _gb._FUNCTION);
+dfg("BL", _gb._BOOLEAN);
+dfg("ST", _gb._STRING);
+dfg("SY", _gb._SYMBOL);
+dfg("NO", _gb._NUMBER);
+dfg("BI", _gb._BIG_INT);
+dfg("OJ", _gb._OBJECT);
 
 dfg("fn", Function);
 dfg("bl", Boolean);
@@ -107,11 +107,11 @@ dfg("oj", Object);
 
 
 // frequent object types alias constant
-dfg("DT", _g._DATE);
+dfg("DT", _gb._DATE);
 
-dfg("RA", _g._ARRAY);
-dfg("SA", _g._SET);
-dfg("MA", _g._MAP);
+dfg("RA", _gb._ARRAY);
+dfg("SA", _gb._SET);
+dfg("MA", _gb._MAP);
 
 dfg("dt", Date);
 
@@ -121,8 +121,8 @@ dfg("ma", Map);
 
 
 // frequent assign types alias constant
-dfg("def", _g.DEFAULT);
-dfg("fin", _g.FINALLY);
+dfg("def", _gb.DEFAULT);
+dfg("fin", _gb.FINALLY);
 
 
 // frequent object types empty object issuer alias constant
@@ -135,172 +135,172 @@ dfg("x", {
 
 
 // bypass constant
-dfg("ifx", _g.executeIf);
-dfg("itx", _g.executeWhen);
+dfg("ifx", _gb.executeIf);
+dfg("itx", _gb.executeWhen);
 
-dfg("ifr", _g.ifReturn);
+dfg("ifr", _gb.ifReturn);
 
-dfg("roen", _g.ifReturnOrEmptyNumber);
-dfg("roes", _g.ifReturnOrEmptyString);
-dfg("roea", _g.ifReturnOrEmptyArray);
-dfg("roeo", _g.ifReturnOrEmptyObject);
+dfg("roen", _gb.ifReturnOrEmptyNumber);
+dfg("roes", _gb.ifReturnOrEmptyString);
+dfg("roea", _gb.ifReturnOrEmptyArray);
+dfg("roeo", _gb.ifReturnOrEmptyObject);
 
-dfg("val", _g.valet);
+dfg("val", _gb.valet);
 
 
 // common process shortcut constant
-dfg("f02b", _g.forZeroToBefore);
-dfg("f02r", _g.forZeroToReach);
+dfg("f02b", _gb.forZeroToBefore);
+dfg("f02r", _gb.forZeroToReach);
 
-dfg("f20", _g.forToZeroFrom);
-dfg("f21", _g.forToPrimeFrom);
+dfg("f20", _gb.forToZeroFrom);
+dfg("f21", _gb.forToPrimeFrom);
 
-dfg("ff", _g.forForward);
-dfg("fb", _g.forBackward);
+dfg("ff", _gb.forForward);
+dfg("fb", _gb.forBackward);
 
-dfg("fi", _g.forin);
-dfg("fiv", _g.forinner);
+dfg("fi", _gb.forin);
+dfg("fiv", _gb.forinner);
 
-dfg("fo", _g.forof);
-dfg("fkv", _g.forkv);
+dfg("fo", _gb.forof);
+dfg("fkv", _gb.forkv);
 
-dfg("w", _g.whileIn);
-dfg("dw", _g.doWhileIn);
+dfg("w", _gb.whileIn);
+dfg("dw", _gb.doWhileIn);
 
 
 // meaning comparator constant
-dfg("to", _g.typeOf);
+dfg("to", _gb.typeOf);
 
-dfg("tm", _g.typeMatch);
+dfg("tm", _gb.typeMatch);
 
-dfg("tu", _g.typeUndefined);
-dfg("tf", _g.typeFunction);
-dfg("tb", _g.typeBoolean);
-dfg("ts", _g.typeString);
-dfg("ty", _g.typeSymbol);
-dfg("tn", _g.typeNumber);
-dfg("tg", _g.typeBigint);
-dfg("tj", _g.typeObject);
+dfg("tu", _gb.typeUndefined);
+dfg("tf", _gb.typeFunction);
+dfg("tb", _gb.typeBoolean);
+dfg("ts", _gb.typeString);
+dfg("ty", _gb.typeSymbol);
+dfg("tn", _gb.typeNumber);
+dfg("tg", _gb.typeBigint);
+dfg("tj", _gb.typeObject);
 
-dfg("im", _g.instanceMatch);
-dfg("io", _g.isObject);
-dfg("ia", _g.isArray);
-dfg("ioa", _g.isArray);
-dfg("ios", _g.isString);
-dfg("ion", _g.isNumber);
-dfg("iot", _g.isSet);
-dfg("iop", _g.isMap);
+dfg("im", _gb.instanceMatch);
+dfg("io", _gb.isObject);
+dfg("ia", _gb.isArray);
+dfg("ioa", _gb.isArray);
+dfg("ios", _gb.isString);
+dfg("ion", _gb.isNumber);
+dfg("iot", _gb.isSet);
+dfg("iop", _gb.isMap);
 
-dfg("xv", _g.exact);
-dfg("nxv", _g.notExact);
-dfg("xm", _g.exactMatches);
-dfg("nx", _g.notExactMatches);
+dfg("xv", _gb.exact);
+dfg("nxv", _gb.notExact);
+dfg("xm", _gb.exactMatches);
+dfg("nx", _gb.notExactMatches);
 
-dfg("ev", _g.equals);
-dfg("nev", _g.notEquals);
-dfg("sm", _g.same);
-dfg("df", _g.diffrent);
+dfg("ev", _gb.equals);
+dfg("nev", _gb.notEquals);
+dfg("sm", _gb.same);
+dfg("df", _gb.diffrent);
 
-dfg("gtv", _g.getherThan);
-dfg("ltv", _g.lessThan);
-dfg("ngt", _g.notGetherThan);
-dfg("nlt", _g.notLessThan);
+dfg("gtv", _gb.getherThan);
+dfg("ltv", _gb.lessThan);
+dfg("ngt", _gb.notGetherThan);
+dfg("nlt", _gb.notLessThan);
 
-dfg("gev", _g.getherOrEquals);
-dfg("lev", _g.lessOrEquels);
-dfg("nge", _g.notGetherAndEquals);
-dfg("nle", _g.notLessAndEquals);
+dfg("gev", _gb.getherOrEquals);
+dfg("lev", _gb.lessOrEquels);
+dfg("nge", _gb.notGetherAndEquals);
+dfg("nle", _gb.notLessAndEquals);
 
-dfg("fc", _g.isFalseCase);
-dfg("nfc", _g.isTrueCase);
+dfg("fc", _gb.isFalseCase);
+dfg("nfc", _gb.isTrueCase);
 
-dfg("xu", _g.isUndefined);
-dfg("xn", _g.isNull);
-dfg("xt", _g.isExactTrue);
-dfg("xf", _g.isExactFalse);
+dfg("xu", _gb.isUndefined);
+dfg("xn", _gb.isNull);
+dfg("xt", _gb.isExactTrue);
+dfg("xf", _gb.isExactFalse);
 
-dfg("nxu", _g.isNotUndefined);
-dfg("nxn", _g.isNotNull);
-dfg("nxt", _g.isNotTrue);
-dfg("nxf", _g.isNotFalse);
+dfg("nxu", _gb.isNotUndefined);
+dfg("nxn", _gb.isNotNull);
+dfg("nxt", _gb.isNotTrue);
+dfg("nxf", _gb.isNotFalse);
 
-dfg("en", _g.isNully);
-dfg("et", _g.isTruely);
-dfg("ef", _g.isFalsely);
-dfg("ee", _g.isEmpty);
+dfg("en", _gb.isNully);
+dfg("et", _gb.isTruely);
+dfg("ef", _gb.isFalsely);
+dfg("ee", _gb.isEmpty);
 
-dfg("nn", _g.isNotNully);
-dfg("nt", _g.isNotTruely);
-dfg("nf", _g.isNotFalsely);
-dfg("ne", _g.isNotEmpty);
+dfg("nn", _gb.isNotNully);
+dfg("nt", _gb.isNotTruely);
+dfg("nf", _gb.isNotFalsely);
+dfg("ne", _gb.isNotEmpty);
 
-dfg("noe", _g.isNullOrEmpty);
-dfg("nne", _g.isNotNullAndEmpty);
+dfg("noe", _gb.isNullOrEmpty);
+dfg("nne", _gb.isNotNullAndEmpty);
 
 
 // quick execute by conditions constant
-dfg("inoe", _g.ifNullOrEmpty);
-dfg("inne", _g.ifNotNullAndEmpty);
+dfg("inoe", _gb.ifNullOrEmpty);
+dfg("inne", _gb.ifNotNullAndEmpty);
 
 
 // do and return inline double takes
-dfg("dr", _g.doAndReturn);
-dfg("drx", _g.doAndReturnByExecute);
+dfg("dr", _gb.doAndReturn);
+dfg("drx", _gb.doAndReturnByExecute);
 
 
 // object method shortcut constant
-dfg("ok", _g.keysOf);
-dfg("ov", _g.valuesOf);
-dfg("oe", _g.entriesOf);
-dfg("oc", _g.countOf);
+dfg("ok", _gb.keysOf);
+dfg("ov", _gb.valuesOf);
+dfg("oe", _gb.entriesOf);
+dfg("oc", _gb.countOf);
 
-dfg("occ", _g.checkCount);
+dfg("occ", _gb.checkCount);
 
 
 // match case constant
-dfg("mc", _g.matchCase);
-dfg("ec", _g.equalCase);
-dfg("xc", _g.exactCase);
-dfg("tc", _g.typeCase);
-dfg("cc", _g.classCase);
-dfg("kc", _g.kindCase);
+dfg("mc", _gb.matchCase);
+dfg("ec", _gb.equalCase);
+dfg("xc", _gb.exactCase);
+dfg("tc", _gb.typeCase);
+dfg("cc", _gb.classCase);
+dfg("kc", _gb.kindCase);
 
 
 /** variable data copy */
-dfg("cp", _g.copy);
-dfg("mk", _g.mock);
-dfg("mm", _g.mimic);
-dfg("tw", _g.twin);
-dfg("cn", _g.clone);
+dfg("cp", _gb.copy);
+dfg("mk", _gb.mock);
+dfg("mm", _gb.mimic);
+dfg("tw", _gb.twin);
+dfg("cn", _gb.clone);
 
-dfg("pc", _g.patch);
-dfg("ow", _g.overwrite);
-dfg("tk", _g.takeover);
-dfg("aq", _g.acquire);
-dfg("ih", _g.inherit);
+dfg("pc", _gb.patch);
+dfg("ow", _gb.overwrite);
+dfg("tk", _gb.takeover);
+dfg("aq", _gb.acquire);
+dfg("ih", _gb.inherit);
 
-dfg("rv", _g.revert);
+dfg("rv", _gb.revert);
 
 
 /** run handle */
-dfg("pq", _g.postQueue);
-dfg("pd", _g.postDelayed);
-dfg("pp", _g.postPromise);
-dfg("pb", _g.postBonded);
-dfg("ppq", _g.postPromiseQueue);
-dfg("paq", _g.postAsyncQueue);
-dfg("pwq", _g.postAwaitQueue);
-dfg("pfq", _g.postFrameQueue);
-dfg("pfp", _g.postFramePromise);
+dfg("pq", _gb.postQueue);
+dfg("pd", _gb.postDelayed);
+dfg("pp", _gb.postPromise);
+dfg("pb", _gb.postBonded);
+dfg("ppq", _gb.postPromiseQueue);
+dfg("paq", _gb.postAsyncQueue);
+dfg("pwq", _gb.postAwaitQueue);
+dfg("pfq", _gb.postFrameQueue);
+dfg("pfp", _gb.postFramePromise);
 
 
 // Object function shortcut constants
-dfg("dsp", _g.defineStaticProperty);
-dfg("dp", _g.defineProperty);
-dfg("dpx", _g.definePropertyPlex);
-dfg("dspgs", _g.defineStaticGetterAndSetter);
-dfg("dpgs", _g.defineGetterAndSetter);
-dfg("dpgsx", _g.defineGetterAndSetterPlex);
+dfg("dsp", _gb.defineStaticProperty);
+dfg("dp", _gb.defineProperty);
+dfg("dpx", _gb.definePropertyPlex);
+dfg("dspgs", _gb.defineStaticGetterAndSetter);
+dfg("dpgs", _gb.defineGetterAndSetter);
+dfg("dpgsx", _gb.defineGetterAndSetterPlex);
 
 
 // additional static function for classes
@@ -316,35 +316,35 @@ definePropertyPlex("tc", function () { return typeCase(this.it, ...arguments); }
 definePropertyPlex("cc", function () { return classCase(this.it, ...arguments); });
 definePropertyPlex("kc", function () { return kindCase(this.it, ...arguments); });
 
-definePropertyPlex("ee", function (process = it => it, ornot = it => it, numberEmptyMatch = 0) { return _g.isEmpty(this.it, numberEmptyMatch) ? process(this.it) : ornot(this.it); });
-definePropertyPlex("ne", function (process = it => it, ornot = it => it, numberEmptyMatch = 0) { return _g.isNotEmpty(this.it, numberEmptyMatch) ? process(this.it) : ornot(this.it); });
+definePropertyPlex("ee", function (process = it => it, ornot = it => it, numberEmptyMatch = 0) { return _gb.isEmpty(this.it, numberEmptyMatch) ? process(this.it) : ornot(this.it); });
+definePropertyPlex("ne", function (process = it => it, ornot = it => it, numberEmptyMatch = 0) { return _gb.isNotEmpty(this.it, numberEmptyMatch) ? process(this.it) : ornot(this.it); });
 
-definePropertyPlex("dr", function (does = (it, args) => { }, returns, args = []) { return _g.doAndReturn(does, returns, [this.it, ...args]); });
-definePropertyPlex("drx", function (does = (it, args) => { }, forReturns, args = []) { return _g.doAndReturnByExecute(does, forReturns, [this.it, ...args]); });
+definePropertyPlex("dr", function (does = (it, args) => { }, returns, args = []) { return _gb.doAndReturn(does, returns, [this.it, ...args]); });
+definePropertyPlex("drx", function (does = (it, args) => { }, forReturns, args = []) { return _gb.doAndReturnByExecute(does, forReturns, [this.it, ...args]); });
 
-defineGetterAndSetter(Object, "ok", function () { return _g.keysOf(this.it); });
-defineGetterAndSetter(Object, "ov", function () { return _g.valuesOf(this.it); });
-defineGetterAndSetter(Object, "oe", function () { return _g.entriesOf(this.it); });
-defineGetterAndSetter(Object, "oc", function () { return _g.countOf(this.it); });
-defineGetterAndSetter(Object, "occ", function () { return _g.checkCount(this.it, (k, v) => true); });
+defineGetterAndSetter(Object, "ok", function () { return _gb.keysOf(this.it); });
+defineGetterAndSetter(Object, "ov", function () { return _gb.valuesOf(this.it); });
+defineGetterAndSetter(Object, "oe", function () { return _gb.entriesOf(this.it); });
+defineGetterAndSetter(Object, "oc", function () { return _gb.countOf(this.it); });
+defineGetterAndSetter(Object, "occ", function () { return _gb.checkCount(this.it, (k, v) => true); });
 
-defineProperty(Object, "fk", function (work = key => { return false; }) { return _g.forof(this.it.ways, work); });
-defineProperty(Object, "fv", function (work = value => { return false; }) { return _g.forof(this.it.looks, work); });
-defineProperty(Object, "fe", function (work = (key, value) => { return false; }) { return _g.forkv(this.it.entire, work); });
-defineProperty(Object, "fkv", function (work = (key, value) => { return false; }) { return _g.forkv(this.it.entire, work); });
+defineProperty(Object, "fk", function (work = key => { return false; }) { return _gb.forof(this.it.ways, work); });
+defineProperty(Object, "fv", function (work = value => { return false; }) { return _gb.forof(this.it.looks, work); });
+defineProperty(Object, "fe", function (work = (key, value) => { return false; }) { return _gb.forkv(this.it.entire, work); });
+defineProperty(Object, "fkv", function (work = (key, value) => { return false; }) { return _gb.forkv(this.it.entire, work); });
 
-defineProperty(Object, "cp", function (dataOnly = true, primitiveOnly = false, recusive = true) { return _g.copy(this, dataOnly, primitiveOnly, recusive); });
-defineProperty(Object, "pc", function (from, dataOnly = true, primitiveOnly = false, recusive = true, append = false) { return _g.patch(this.it, from, dataOnly, primitiveOnly, recusive, append); });
-defineProperty(Object, "rv", function (from, dataOnly = true, primitiveOnly = false, recusive = true, exceptNew = false) { return _g.revert(this.it, from, dataOnly, primitiveOnly, recusive, exceptNew); });
+defineProperty(Object, "cp", function (dataOnly = true, primitiveOnly = false, recusive = true) { return _gb.copy(this, dataOnly, primitiveOnly, recusive); });
+defineProperty(Object, "pc", function (from, dataOnly = true, primitiveOnly = false, recusive = true, append = false) { return _gb.patch(this.it, from, dataOnly, primitiveOnly, recusive, append); });
+defineProperty(Object, "rv", function (from, dataOnly = true, primitiveOnly = false, recusive = true, exceptNew = false) { return _gb.revert(this.it, from, dataOnly, primitiveOnly, recusive, exceptNew); });
 
-definePropertyPlex("ifeq", function (that, process = it => it, ornot = it => { }) { return this.let(it => _g.executeIf(it == that, process, [it], ornot)); });
-definePropertyPlex("ifneq", function (that, process = it => it, ornot = it => { }) { return this.let(it => _g.executeIf(it != that, process, [it], ornot)); });
+definePropertyPlex("ifeq", function (that, process = it => it, ornot = it => { }) { return this.let(it => _gb.executeIf(it == that, process, [it], ornot)); });
+definePropertyPlex("ifneq", function (that, process = it => it, ornot = it => { }) { return this.let(it => _gb.executeIf(it != that, process, [it], ornot)); });
 
 
 
 // Regex builder alias
 dfg("rx", (regex, flags) => new RegExp(regex, flags));
-dfg("reg", _g.rx);
+dfg("reg", _gb.rx);
 dfg("ri", regex => new RegExp(regex, "i"));
 dfg("rg", regex => new RegExp(regex, "g"));
 dfg("rm", regex => new RegExp(regex, "m"));
@@ -358,37 +358,37 @@ dfg("rigm", regex => new RegExp(regex, "igm"));
 // common extra characters constants
 dfg("lt", "<");
 dfg("gt", ">");
-dfg("ab", _g.lt + _g.gt);
-dfg("cb", _g.gt + _g.lt);
+dfg("ab", _gb.lt + _gb.gt);
+dfg("cb", _gb.gt + _gb.lt);
 dfg("ti", "~");
 dfg("ep", "!");
-dfg("em", _g.ep);
+dfg("em", _gb.ep);
 dfg("at", "@");
 dfg("ds", "$");
 dfg("ms", "&");
 dfg("ps", "%");
 dfg("cf", "^");
 dfg("ak", "*");
-dfg("mp", _g.ak);
+dfg("mp", _gb.ak);
 dfg("ad", "+");
-dfg("add", _g.ad + _g.ad);
+dfg("add", _gb.ad + _gb.ad);
 dfg("hp", "-");
-dfg("sr", _g.hp);
-dfg("srr", _g.sr + _g.sr);
+dfg("sr", _gb.hp);
+dfg("srr", _gb.sr + _gb.sr);
 dfg("us", "_");
 dfg("eq", "=");
 dfg("vl", "|");
 dfg("bs", "\\");
 dfg("ss", "/");
-dfg("dv", _g.ss);
+dfg("dv", _gb.ss);
 dfg("qm", "?");
-dfg("nl", _g.ep + _g.eq);
-dfg("le", _g.lt + _g.eq);
-dfg("ge", _g.gt + _g.eq);
-dfg("fa", _g.ad + _g.eq);
-dfg("fs", _g.sr + _g.eq);
-dfg("fm", _g.mp + _g.eq);
-dfg("fd", _g.dv + _g.eq);
+dfg("nl", _gb.ep + _gb.eq);
+dfg("le", _gb.lt + _gb.eq);
+dfg("ge", _gb.gt + _gb.eq);
+dfg("fa", _gb.ad + _gb.eq);
+dfg("fs", _gb.sr + _gb.eq);
+dfg("fm", _gb.mp + _gb.eq);
+dfg("fd", _gb.dv + _gb.eq);
 dfg("sq", "'");
 dfg("dq", '"');
 dfg("gv", '`');
@@ -396,20 +396,20 @@ dfg("cl", ":");
 dfg("sc", ";");
 dfg("cm", ",");
 dfg("es", "");
-dfg("l", _g.cm);
+dfg("l", _gb.cm);
 dfg("s", " ");
 dfg("i", "#");
 dfg("d", ".");
 
 dfg("cr", "\r");
 dfg("lf", "\n");
-dfg("crlf", _g.cr + _g.lf);
-dfg("lfcr", _g.lf + _g.cr);
+dfg("crlf", _gb.cr + _gb.lf);
+dfg("lfcr", _gb.lf + _gb.cr);
 dfg("tab", "\t");
 
 dfg("ecr", "\\r");
 dfg("elf", "\\n");
-dfg("ecrlf", _g.ecr + _g.elf);
-dfg("elfcr", _g.elf + _g.ecr);
+dfg("ecrlf", _gb.ecr + _gb.elf);
+dfg("elfcr", _gb.elf + _gb.ecr);
 dfg("etab", "\\t");
 
