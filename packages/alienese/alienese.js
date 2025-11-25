@@ -356,6 +356,12 @@ dfg("rigm", regex => new RegExp(regex, "igm"));
 
 
 // common extra characters constants
+dfg("lr", "(");
+dfg("rr", ")");
+dfg("lc", "{");
+dfg("rc", "}");
+dfg("ls", "[");
+dfg("rs", "]");
 dfg("lt", "<");
 dfg("gt", ">");
 dfg("ab", _gb.lt + _gb.gt);
