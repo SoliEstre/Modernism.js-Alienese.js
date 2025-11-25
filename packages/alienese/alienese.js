@@ -32,7 +32,7 @@ SOFTWARE.
 // This patch aims to create smaller (quicker) and more concise (lighter) JavaScript code.
 // It makes the code more implicit and serves as an alternative to obfuscation.
 // 
-// v0.4.2 / release 2025.11.25
+// v0.4.3 / release 2025.11.25
 // 
 // * Must be loaded modernism.js before this script.
 // 
@@ -41,9 +41,13 @@ SOFTWARE.
 
 
 
-// primitive types alias constant
-const _g = _global ?? (typeof globalThis !== 'undefined') ? globalThis : (typeof window !== 'undefined' ? window : global);
-const dfg = defineGlobal ?? ((name, value) => {
+// Auto-load modernism in Node.js environment
+if (typeof require !== 'undefined' && typeof module !== 'undefined') {
+    try { require("modernism"); } catch (e) { }
+}
+
+let _g = _global ?? (typeof globalThis !== 'undefined') ? globalThis : (typeof window !== 'undefined' ? window : global);
+let dfg = defineGlobal ?? ((name, value) => {
     Object.defineProperty(_g, name, {
         value: value,
         writable: false,
@@ -52,11 +56,7 @@ const dfg = defineGlobal ?? ((name, value) => {
     });
 });
 
-// Auto-load modernism in Node.js environment
-if (typeof require !== 'undefined' && typeof module !== 'undefined') {
-    try { require("modernism"); } catch (e) { }
-}
-
+// primitive types alias constant
 dfg("U", UNDEFINED);
 dfg("N", NULL);
 dfg("T", TRUE);
