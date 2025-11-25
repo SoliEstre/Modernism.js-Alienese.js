@@ -32,7 +32,7 @@ SOFTWARE.
 // This patch aims to create smaller (quicker) and more concise (lighter) JavaScript code.
 // It makes the code more implicit and serves as an alternative to obfuscation.
 // 
-// v0.4.1 / release 2025.11.24
+// v0.4.2 / release 2025.11.25
 // 
 // * Must be loaded modernism.js before this script.
 // 
@@ -42,91 +42,91 @@ SOFTWARE.
 
 
 // primitive types alias constant
-const _global = (typeof globalThis !== 'undefined') ? globalThis : (typeof window !== 'undefined' ? window : global);
-const defineGlobal = (name, value) => {
-    Object.defineProperty(_global, name, {
+const _g = _global ?? (typeof globalThis !== 'undefined') ? globalThis : (typeof window !== 'undefined' ? window : global);
+const dfg = defineGlobal ?? ((name, value) => {
+    Object.defineProperty(_g, name, {
         value: value,
         writable: false,
         configurable: false,
         enumerable: false
     });
-};
+});
 
 // Auto-load modernism in Node.js environment
 if (typeof require !== 'undefined' && typeof module !== 'undefined') {
     try { require("modernism"); } catch (e) { }
 }
 
-defineGlobal("U", UNDEFINED);
-defineGlobal("N", NULL);
-defineGlobal("T", TRUE);
-defineGlobal("F", FALSE);
+dfg("U", UNDEFINED);
+dfg("N", NULL);
+dfg("T", TRUE);
+dfg("F", FALSE);
 
-defineGlobal("u", _global.undefined);
-defineGlobal("n", _global.null);
-defineGlobal("t", _global.true);
-defineGlobal("f", _global.false);
+dfg("u", _g.undefined);
+dfg("n", _g.null);
+dfg("t", _g.true);
+dfg("f", _g.false);
 
 // end point assigner constant
-defineGlobal("eoo", _global.u);
-defineGlobal("eoa", _global.u);
+dfg("eoo", _g.u);
+dfg("eoa", _g.u);
 
 // prototype of primitive types alias constant
-defineGlobal("FNC", _global.FUNCTION);
-defineGlobal("BLE", _global.BOOLEAN);
-defineGlobal("STR", _global.STRING);
-defineGlobal("SYM", _global.SYMBOL);
-defineGlobal("NUM", _global.NUMBER);
-defineGlobal("BIG", _global.BIGINT);
-defineGlobal("OBJ", _global.OBJECT);
+dfg("FNC", _g.FUNCTION);
+dfg("BLE", _g.BOOLEAN);
+dfg("STR", _g.STRING);
+dfg("SYM", _g.SYMBOL);
+dfg("NUM", _g.NUMBER);
+dfg("BIG", _g.BIGINT);
+dfg("OBJ", _g.OBJECT);
 
-defineGlobal("fun", Function);
-defineGlobal("ble", Boolean);
-defineGlobal("str", String);
-defineGlobal("sym", Symbol);
-defineGlobal("num", Number);
-defineGlobal("big", BigInt);
-defineGlobal("obj", Object);
+dfg("fun", Function);
+dfg("ble", Boolean);
+dfg("str", String);
+dfg("sym", Symbol);
+dfg("num", Number);
+dfg("big", BigInt);
+dfg("obj", Object);
 
 // class names of primitive types constant
-defineGlobal("FN", _global._FUNCTION);
-defineGlobal("BL", _global._BOOLEAN);
-defineGlobal("ST", _global._STRING);
-defineGlobal("SY", _global._SYMBOL);
-defineGlobal("NO", _global._NUMBER);
-defineGlobal("BI", _global._BIG_INT);
-defineGlobal("OJ", _global._OBJECT);
+dfg("FN", _g._FUNCTION);
+dfg("BL", _g._BOOLEAN);
+dfg("ST", _g._STRING);
+dfg("SY", _g._SYMBOL);
+dfg("NO", _g._NUMBER);
+dfg("BI", _g._BIG_INT);
+dfg("OJ", _g._OBJECT);
 
-defineGlobal("fn", Function);
-defineGlobal("bl", Boolean);
-defineGlobal("sg", String);
-defineGlobal("sl", Symbol);
-defineGlobal("no", Number);
-defineGlobal("bi", BigInt);
-defineGlobal("oj", Object);
+dfg("fn", Function);
+dfg("bl", Boolean);
+dfg("sg", String);
+dfg("sl", Symbol);
+dfg("no", Number);
+dfg("bi", BigInt);
+dfg("oj", Object);
 
 
 // frequent object types alias constant
-defineGlobal("DT", _global._DATE);
+dfg("DT", _g._DATE);
 
-defineGlobal("RA", _global._ARRAY);
-defineGlobal("SA", _global._SET);
-defineGlobal("MA", _global._MAP);
+dfg("RA", _g._ARRAY);
+dfg("SA", _g._SET);
+dfg("MA", _g._MAP);
 
-defineGlobal("dt", Date);
+dfg("dt", Date);
 
-defineGlobal("ra", Array);
-defineGlobal("sa", Set);
-defineGlobal("ma", Map);
+dfg("ra", Array);
+dfg("sa", Set);
+dfg("ma", Map);
 
 
 // frequent assign types alias constant
-defineGlobal("def", _global.DEFAULT);
-defineGlobal("fin", _global.FINALLY);
+dfg("def", _g.DEFAULT);
+dfg("fin", _g.FINALLY);
 
 
 // frequent object types empty object issuer alias constant
-defineGlobal("x", {
+dfg("x", {
     get a() { return new Array(); },
     get d() { return new Date(); },
     get t() { return new Set(); },
@@ -135,172 +135,172 @@ defineGlobal("x", {
 
 
 // bypass constant
-defineGlobal("ifx", _global.executeIf);
-defineGlobal("itx", _global.executeWhen);
+dfg("ifx", _g.executeIf);
+dfg("itx", _g.executeWhen);
 
-defineGlobal("ifr", _global.ifReturn);
+dfg("ifr", _g.ifReturn);
 
-defineGlobal("roen", _global.ifReturnOrEmptyNumber);
-defineGlobal("roes", _global.ifReturnOrEmptyString);
-defineGlobal("roea", _global.ifReturnOrEmptyArray);
-defineGlobal("roeo", _global.ifReturnOrEmptyObject);
+dfg("roen", _g.ifReturnOrEmptyNumber);
+dfg("roes", _g.ifReturnOrEmptyString);
+dfg("roea", _g.ifReturnOrEmptyArray);
+dfg("roeo", _g.ifReturnOrEmptyObject);
 
-defineGlobal("val", _global.valet);
+dfg("val", _g.valet);
 
 
 // common process shortcut constant
-defineGlobal("f02b", _global.forZeroToBefore);
-defineGlobal("f02r", _global.forZeroToReach);
+dfg("f02b", _g.forZeroToBefore);
+dfg("f02r", _g.forZeroToReach);
 
-defineGlobal("f20", _global.forToZeroFrom);
-defineGlobal("f21", _global.forToPrimeFrom);
+dfg("f20", _g.forToZeroFrom);
+dfg("f21", _g.forToPrimeFrom);
 
-defineGlobal("ff", _global.forForward);
-defineGlobal("fb", _global.forBackward);
+dfg("ff", _g.forForward);
+dfg("fb", _g.forBackward);
 
-defineGlobal("fi", _global.forin);
-defineGlobal("fiv", _global.forinner);
+dfg("fi", _g.forin);
+dfg("fiv", _g.forinner);
 
-defineGlobal("fo", _global.forof);
-defineGlobal("fkv", _global.forkv);
+dfg("fo", _g.forof);
+dfg("fkv", _g.forkv);
 
-defineGlobal("w", _global.whileIn);
-defineGlobal("dw", _global.doWhileIn);
+dfg("w", _g.whileIn);
+dfg("dw", _g.doWhileIn);
 
 
 // meaning comparator constant
-defineGlobal("to", _global.typeOf);
+dfg("to", _g.typeOf);
 
-defineGlobal("tm", _global.typeMatch);
+dfg("tm", _g.typeMatch);
 
-defineGlobal("tu", _global.typeUndefined);
-defineGlobal("tf", _global.typeFunction);
-defineGlobal("tb", _global.typeBoolean);
-defineGlobal("ts", _global.typeString);
-defineGlobal("ty", _global.typeSymbol);
-defineGlobal("tn", _global.typeNumber);
-defineGlobal("tg", _global.typeBigint);
-defineGlobal("tj", _global.typeObject);
+dfg("tu", _g.typeUndefined);
+dfg("tf", _g.typeFunction);
+dfg("tb", _g.typeBoolean);
+dfg("ts", _g.typeString);
+dfg("ty", _g.typeSymbol);
+dfg("tn", _g.typeNumber);
+dfg("tg", _g.typeBigint);
+dfg("tj", _g.typeObject);
 
-defineGlobal("im", _global.instanceMatch);
-defineGlobal("io", _global.isObject);
-defineGlobal("ia", _global.isArray);
-defineGlobal("ioa", _global.isArray);
-defineGlobal("ios", _global.isString);
-defineGlobal("ion", _global.isNumber);
-defineGlobal("iot", _global.isSet);
-defineGlobal("iop", _global.isMap);
+dfg("im", _g.instanceMatch);
+dfg("io", _g.isObject);
+dfg("ia", _g.isArray);
+dfg("ioa", _g.isArray);
+dfg("ios", _g.isString);
+dfg("ion", _g.isNumber);
+dfg("iot", _g.isSet);
+dfg("iop", _g.isMap);
 
-defineGlobal("xv", _global.exact);
-defineGlobal("nxv", _global.notExact);
-defineGlobal("xm", _global.exactMatches);
-defineGlobal("nx", _global.notExactMatches);
+dfg("xv", _g.exact);
+dfg("nxv", _g.notExact);
+dfg("xm", _g.exactMatches);
+dfg("nx", _g.notExactMatches);
 
-defineGlobal("ev", _global.equals);
-defineGlobal("nev", _global.notEquals);
-defineGlobal("sm", _global.same);
-defineGlobal("df", _global.diffrent);
+dfg("ev", _g.equals);
+dfg("nev", _g.notEquals);
+dfg("sm", _g.same);
+dfg("df", _g.diffrent);
 
-defineGlobal("gtv", _global.getherThan);
-defineGlobal("ltv", _global.lessThan);
-defineGlobal("ngt", _global.notGetherThan);
-defineGlobal("nlt", _global.notLessThan);
+dfg("gtv", _g.getherThan);
+dfg("ltv", _g.lessThan);
+dfg("ngt", _g.notGetherThan);
+dfg("nlt", _g.notLessThan);
 
-defineGlobal("gev", _global.getherOrEquals);
-defineGlobal("lev", _global.lessOrEquels);
-defineGlobal("nge", _global.notGetherAndEquals);
-defineGlobal("nle", _global.notLessAndEquals);
+dfg("gev", _g.getherOrEquals);
+dfg("lev", _g.lessOrEquels);
+dfg("nge", _g.notGetherAndEquals);
+dfg("nle", _g.notLessAndEquals);
 
-defineGlobal("fc", _global.isFalseCase);
-defineGlobal("nfc", _global.isTrueCase);
+dfg("fc", _g.isFalseCase);
+dfg("nfc", _g.isTrueCase);
 
-defineGlobal("xu", _global.isUndefined);
-defineGlobal("xn", _global.isNull);
-defineGlobal("xt", _global.isExactTrue);
-defineGlobal("xf", _global.isExactFalse);
+dfg("xu", _g.isUndefined);
+dfg("xn", _g.isNull);
+dfg("xt", _g.isExactTrue);
+dfg("xf", _g.isExactFalse);
 
-defineGlobal("nxu", _global.isNotUndefined);
-defineGlobal("nxn", _global.isNotNull);
-defineGlobal("nxt", _global.isNotTrue);
-defineGlobal("nxf", _global.isNotFalse);
+dfg("nxu", _g.isNotUndefined);
+dfg("nxn", _g.isNotNull);
+dfg("nxt", _g.isNotTrue);
+dfg("nxf", _g.isNotFalse);
 
-defineGlobal("en", _global.isNully);
-defineGlobal("et", _global.isTruely);
-defineGlobal("ef", _global.isFalsely);
-defineGlobal("ee", _global.isEmpty);
+dfg("en", _g.isNully);
+dfg("et", _g.isTruely);
+dfg("ef", _g.isFalsely);
+dfg("ee", _g.isEmpty);
 
-defineGlobal("nn", _global.isNotNully);
-defineGlobal("nt", _global.isNotTruely);
-defineGlobal("nf", _global.isNotFalsely);
-defineGlobal("ne", _global.isNotEmpty);
+dfg("nn", _g.isNotNully);
+dfg("nt", _g.isNotTruely);
+dfg("nf", _g.isNotFalsely);
+dfg("ne", _g.isNotEmpty);
 
-defineGlobal("noe", _global.isNullOrEmpty);
-defineGlobal("nne", _global.isNotNullAndEmpty);
+dfg("noe", _g.isNullOrEmpty);
+dfg("nne", _g.isNotNullAndEmpty);
 
 
 // quick execute by conditions constant
-defineGlobal("inoe", _global.ifNullOrEmpty);
-defineGlobal("inne", _global.ifNotNullAndEmpty);
+dfg("inoe", _g.ifNullOrEmpty);
+dfg("inne", _g.ifNotNullAndEmpty);
 
 
 // do and return inline double takes
-defineGlobal("dr", _global.doAndReturn);
-defineGlobal("drx", _global.doAndReturnByExecute);
+dfg("dr", _g.doAndReturn);
+dfg("drx", _g.doAndReturnByExecute);
 
 
 // object method shortcut constant
-defineGlobal("ok", _global.keysOf);
-defineGlobal("ov", _global.valuesOf);
-defineGlobal("oe", _global.entriesOf);
-defineGlobal("oc", _global.countOf);
+dfg("ok", _g.keysOf);
+dfg("ov", _g.valuesOf);
+dfg("oe", _g.entriesOf);
+dfg("oc", _g.countOf);
 
-defineGlobal("occ", _global.checkCount);
+dfg("occ", _g.checkCount);
 
 
 // match case constant
-defineGlobal("mc", _global.matchCase);
-defineGlobal("ec", _global.equalCase);
-defineGlobal("xc", _global.exactCase);
-defineGlobal("tc", _global.typeCase);
-defineGlobal("cc", _global.classCase);
-defineGlobal("kc", _global.kindCase);
+dfg("mc", _g.matchCase);
+dfg("ec", _g.equalCase);
+dfg("xc", _g.exactCase);
+dfg("tc", _g.typeCase);
+dfg("cc", _g.classCase);
+dfg("kc", _g.kindCase);
 
 
 /** variable data copy */
-defineGlobal("cp", _global.copy);
-defineGlobal("mk", _global.mock);
-defineGlobal("mm", _global.mimic);
-defineGlobal("tw", _global.twin);
-defineGlobal("cn", _global.clone);
+dfg("cp", _g.copy);
+dfg("mk", _g.mock);
+dfg("mm", _g.mimic);
+dfg("tw", _g.twin);
+dfg("cn", _g.clone);
 
-defineGlobal("pc", _global.patch);
-defineGlobal("ow", _global.overwrite);
-defineGlobal("tk", _global.takeover);
-defineGlobal("aq", _global.acquire);
-defineGlobal("ih", _global.inherit);
+dfg("pc", _g.patch);
+dfg("ow", _g.overwrite);
+dfg("tk", _g.takeover);
+dfg("aq", _g.acquire);
+dfg("ih", _g.inherit);
 
-defineGlobal("rv", _global.revert);
+dfg("rv", _g.revert);
 
 
 /** run handle */
-defineGlobal("pq", _global.postQueue);
-defineGlobal("pd", _global.postDelayed);
-defineGlobal("pp", _global.postPromise);
-defineGlobal("pb", _global.postBonded);
-defineGlobal("ppq", _global.postPromiseQueue);
-defineGlobal("paq", _global.postAsyncQueue);
-defineGlobal("pwq", _global.postAwaitQueue);
-defineGlobal("pfq", _global.postFrameQueue);
-defineGlobal("pfp", _global.postFramePromise);
+dfg("pq", _g.postQueue);
+dfg("pd", _g.postDelayed);
+dfg("pp", _g.postPromise);
+dfg("pb", _g.postBonded);
+dfg("ppq", _g.postPromiseQueue);
+dfg("paq", _g.postAsyncQueue);
+dfg("pwq", _g.postAwaitQueue);
+dfg("pfq", _g.postFrameQueue);
+dfg("pfp", _g.postFramePromise);
 
 
 // Object function shortcut constants
-defineGlobal("dsp", _global.defineStaticProperty);
-defineGlobal("dp", _global.defineProperty);
-defineGlobal("dpx", _global.definePropertyPlex);
-defineGlobal("dspgs", _global.defineStaticGetterAndSetter);
-defineGlobal("dpgs", _global.defineGetterAndSetter);
-defineGlobal("dpgsx", _global.defineGetterAndSetterPlex);
+dfg("dsp", _g.defineStaticProperty);
+dfg("dp", _g.defineProperty);
+dfg("dpx", _g.definePropertyPlex);
+dfg("dspgs", _g.defineStaticGetterAndSetter);
+dfg("dpgs", _g.defineGetterAndSetter);
+dfg("dpgsx", _g.defineGetterAndSetterPlex);
 
 
 // additional static function for classes
@@ -316,100 +316,100 @@ definePropertyPlex("tc", function () { return typeCase(this.it, ...arguments); }
 definePropertyPlex("cc", function () { return classCase(this.it, ...arguments); });
 definePropertyPlex("kc", function () { return kindCase(this.it, ...arguments); });
 
-definePropertyPlex("ee", function (process = it => it, ornot = it => it, numberEmptyMatch = 0) { return _global.isEmpty(this.it, numberEmptyMatch) ? process(this.it) : ornot(this.it); });
-definePropertyPlex("ne", function (process = it => it, ornot = it => it, numberEmptyMatch = 0) { return _global.isNotEmpty(this.it, numberEmptyMatch) ? process(this.it) : ornot(this.it); });
+definePropertyPlex("ee", function (process = it => it, ornot = it => it, numberEmptyMatch = 0) { return _g.isEmpty(this.it, numberEmptyMatch) ? process(this.it) : ornot(this.it); });
+definePropertyPlex("ne", function (process = it => it, ornot = it => it, numberEmptyMatch = 0) { return _g.isNotEmpty(this.it, numberEmptyMatch) ? process(this.it) : ornot(this.it); });
 
-definePropertyPlex("dr", function (does = (it, args) => { }, returns, args = []) { return _global.doAndReturn(does, returns, [this.it, ...args]); });
-definePropertyPlex("drx", function (does = (it, args) => { }, forReturns, args = []) { return _global.doAndReturnByExecute(does, forReturns, [this.it, ...args]); });
+definePropertyPlex("dr", function (does = (it, args) => { }, returns, args = []) { return _g.doAndReturn(does, returns, [this.it, ...args]); });
+definePropertyPlex("drx", function (does = (it, args) => { }, forReturns, args = []) { return _g.doAndReturnByExecute(does, forReturns, [this.it, ...args]); });
 
-defineGetterAndSetter(Object, "ok", function () { return _global.keysOf(this.it); });
-defineGetterAndSetter(Object, "ov", function () { return _global.valuesOf(this.it); });
-defineGetterAndSetter(Object, "oe", function () { return _global.entriesOf(this.it); });
-defineGetterAndSetter(Object, "oc", function () { return _global.countOf(this.it); });
-defineGetterAndSetter(Object, "occ", function () { return _global.checkCount(this.it, (k, v) => true); });
+defineGetterAndSetter(Object, "ok", function () { return _g.keysOf(this.it); });
+defineGetterAndSetter(Object, "ov", function () { return _g.valuesOf(this.it); });
+defineGetterAndSetter(Object, "oe", function () { return _g.entriesOf(this.it); });
+defineGetterAndSetter(Object, "oc", function () { return _g.countOf(this.it); });
+defineGetterAndSetter(Object, "occ", function () { return _g.checkCount(this.it, (k, v) => true); });
 
-defineProperty(Object, "fk", function (work = key => { return false; }) { return _global.forof(this.it.ways, work); });
-defineProperty(Object, "fv", function (work = value => { return false; }) { return _global.forof(this.it.looks, work); });
-defineProperty(Object, "fe", function (work = (key, value) => { return false; }) { return _global.forkv(this.it.entire, work); });
-defineProperty(Object, "fkv", function (work = (key, value) => { return false; }) { return _global.forkv(this.it.entire, work); });
+defineProperty(Object, "fk", function (work = key => { return false; }) { return _g.forof(this.it.ways, work); });
+defineProperty(Object, "fv", function (work = value => { return false; }) { return _g.forof(this.it.looks, work); });
+defineProperty(Object, "fe", function (work = (key, value) => { return false; }) { return _g.forkv(this.it.entire, work); });
+defineProperty(Object, "fkv", function (work = (key, value) => { return false; }) { return _g.forkv(this.it.entire, work); });
 
-defineProperty(Object, "cp", function (dataOnly = true, primitiveOnly = false, recusive = true) { return _global.copy(this, dataOnly, primitiveOnly, recusive); });
-defineProperty(Object, "pc", function (from, dataOnly = true, primitiveOnly = false, recusive = true, append = false) { return _global.patch(this.it, from, dataOnly, primitiveOnly, recusive, append); });
-defineProperty(Object, "rv", function (from, dataOnly = true, primitiveOnly = false, recusive = true, exceptNew = false) { return _global.revert(this.it, from, dataOnly, primitiveOnly, recusive, exceptNew); });
+defineProperty(Object, "cp", function (dataOnly = true, primitiveOnly = false, recusive = true) { return _g.copy(this, dataOnly, primitiveOnly, recusive); });
+defineProperty(Object, "pc", function (from, dataOnly = true, primitiveOnly = false, recusive = true, append = false) { return _g.patch(this.it, from, dataOnly, primitiveOnly, recusive, append); });
+defineProperty(Object, "rv", function (from, dataOnly = true, primitiveOnly = false, recusive = true, exceptNew = false) { return _g.revert(this.it, from, dataOnly, primitiveOnly, recusive, exceptNew); });
 
-definePropertyPlex("ifeq", function (that, process = it => it, ornot = it => { }) { return this.let(it => _global.executeIf(it == that, process, [it], ornot)); });
-definePropertyPlex("ifneq", function (that, process = it => it, ornot = it => { }) { return this.let(it => _global.executeIf(it != that, process, [it], ornot)); });
+definePropertyPlex("ifeq", function (that, process = it => it, ornot = it => { }) { return this.let(it => _g.executeIf(it == that, process, [it], ornot)); });
+definePropertyPlex("ifneq", function (that, process = it => it, ornot = it => { }) { return this.let(it => _g.executeIf(it != that, process, [it], ornot)); });
 
 
 
 // Regex builder alias
-defineGlobal("rx", (regex, flags) => new RegExp(regex, flags));
-defineGlobal("reg", _global.rx);
-defineGlobal("ri", regex => new RegExp(regex, "i"));
-defineGlobal("rg", regex => new RegExp(regex, "g"));
-defineGlobal("rm", regex => new RegExp(regex, "m"));
-defineGlobal("rig", regex => new RegExp(regex, "ig"));
-defineGlobal("rim", regex => new RegExp(regex, "im"));
-defineGlobal("rgm", regex => new RegExp(regex, "gm"));
-defineGlobal("rigm", regex => new RegExp(regex, "igm"));
+dfg("rx", (regex, flags) => new RegExp(regex, flags));
+dfg("reg", _g.rx);
+dfg("ri", regex => new RegExp(regex, "i"));
+dfg("rg", regex => new RegExp(regex, "g"));
+dfg("rm", regex => new RegExp(regex, "m"));
+dfg("rig", regex => new RegExp(regex, "ig"));
+dfg("rim", regex => new RegExp(regex, "im"));
+dfg("rgm", regex => new RegExp(regex, "gm"));
+dfg("rigm", regex => new RegExp(regex, "igm"));
 
 
 
 // common extra characters constants
-defineGlobal("lt", "<");
-defineGlobal("gt", ">");
-defineGlobal("ab", _global.lt + _global.gt);
-defineGlobal("cb", _global.gt + _global.lt);
-defineGlobal("ti", "~");
-defineGlobal("ep", "!");
-defineGlobal("em", _global.ep);
-defineGlobal("at", "@");
-defineGlobal("ds", "$");
-defineGlobal("ms", "&");
-defineGlobal("ps", "%");
-defineGlobal("cf", "^");
-defineGlobal("ak", "*");
-defineGlobal("mp", _global.ak);
-defineGlobal("ad", "+");
-defineGlobal("add", _global.ad + _global.ad);
-defineGlobal("hp", "-");
-defineGlobal("sr", _global.hp);
-defineGlobal("srr", _global.sr + _global.sr);
-defineGlobal("us", "_");
-defineGlobal("eq", "=");
-defineGlobal("vl", "|");
-defineGlobal("bs", "\\");
-defineGlobal("ss", "/");
-defineGlobal("dv", _global.ss);
-defineGlobal("qm", "?");
-defineGlobal("nl", _global.ep + _global.eq);
-defineGlobal("le", _global.lt + _global.eq);
-defineGlobal("ge", _global.gt + _global.eq);
-defineGlobal("fa", _global.ad + _global.eq);
-defineGlobal("fs", _global.sr + _global.eq);
-defineGlobal("fm", _global.mp + _global.eq);
-defineGlobal("fd", _global.dv + _global.eq);
-defineGlobal("sq", "'");
-defineGlobal("dq", '"');
-defineGlobal("gv", '`');
-defineGlobal("cl", ":");
-defineGlobal("sc", ";");
-defineGlobal("cm", ",");
-defineGlobal("es", "");
-defineGlobal("l", _global.cm);
-defineGlobal("s", " ");
-defineGlobal("i", "#");
-defineGlobal("d", ".");
+dfg("lt", "<");
+dfg("gt", ">");
+dfg("ab", _g.lt + _g.gt);
+dfg("cb", _g.gt + _g.lt);
+dfg("ti", "~");
+dfg("ep", "!");
+dfg("em", _g.ep);
+dfg("at", "@");
+dfg("ds", "$");
+dfg("ms", "&");
+dfg("ps", "%");
+dfg("cf", "^");
+dfg("ak", "*");
+dfg("mp", _g.ak);
+dfg("ad", "+");
+dfg("add", _g.ad + _g.ad);
+dfg("hp", "-");
+dfg("sr", _g.hp);
+dfg("srr", _g.sr + _g.sr);
+dfg("us", "_");
+dfg("eq", "=");
+dfg("vl", "|");
+dfg("bs", "\\");
+dfg("ss", "/");
+dfg("dv", _g.ss);
+dfg("qm", "?");
+dfg("nl", _g.ep + _g.eq);
+dfg("le", _g.lt + _g.eq);
+dfg("ge", _g.gt + _g.eq);
+dfg("fa", _g.ad + _g.eq);
+dfg("fs", _g.sr + _g.eq);
+dfg("fm", _g.mp + _g.eq);
+dfg("fd", _g.dv + _g.eq);
+dfg("sq", "'");
+dfg("dq", '"');
+dfg("gv", '`');
+dfg("cl", ":");
+dfg("sc", ";");
+dfg("cm", ",");
+dfg("es", "");
+dfg("l", _g.cm);
+dfg("s", " ");
+dfg("i", "#");
+dfg("d", ".");
 
-defineGlobal("cr", "\r");
-defineGlobal("lf", "\n");
-defineGlobal("crlf", _global.cr + _global.lf);
-defineGlobal("lfcr", _global.lf + _global.cr);
-defineGlobal("tab", "\t");
+dfg("cr", "\r");
+dfg("lf", "\n");
+dfg("crlf", _g.cr + _g.lf);
+dfg("lfcr", _g.lf + _g.cr);
+dfg("tab", "\t");
 
-defineGlobal("ecr", "\\r");
-defineGlobal("elf", "\\n");
-defineGlobal("ecrlf", _global.ecr + _global.elf);
-defineGlobal("elfcr", _global.elf + _global.ecr);
-defineGlobal("etab", "\\t");
+dfg("ecr", "\\r");
+dfg("elf", "\\n");
+dfg("ecrlf", _g.ecr + _g.elf);
+dfg("elfcr", _g.elf + _g.ecr);
+dfg("etab", "\\t");
 
