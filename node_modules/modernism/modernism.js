@@ -31,15 +31,14 @@ SOFTWARE.
 // Collections of bypass for process codes takes be inline,
 // and monkey patching like as modern languages.
 // 
-// v0.4.1    / release 2025.11.24
+// v0.4.3    / release 2025.11.24
 // 
 // Author: Estre Soliette
 // Established: 2025.01.05
 
 
-// primitive types alias constant
-const _global = (typeof globalThis !== 'undefined') ? globalThis : (typeof window !== 'undefined' ? window : global);
-const defineGlobal = (name, value) => {
+let _global = (typeof globalThis !== 'undefined') ? globalThis : (typeof window !== 'undefined' ? window : global);
+let defineGlobal = (name, value) => {
     Object.defineProperty(_global, name, {
         value: value,
         writable: false,
@@ -48,6 +47,7 @@ const defineGlobal = (name, value) => {
     });
 };
 
+// primitive types alias constant
 defineGlobal("UNDEFINED", "undefined");
 defineGlobal("NULL", "null");
 defineGlobal("TRUE", "true");
