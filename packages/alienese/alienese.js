@@ -32,7 +32,7 @@ SOFTWARE.
 // This patch aims to create smaller (quicker) and more concise (lighter) JavaScript code.
 // It makes the code more implicit and serves as an alternative to obfuscation.
 // 
-// v0.4.4 / release 2025.11.25
+// v0.5.0 / release 2025.12.09
 // 
 // * Must be loaded modernism.js before this script.
 // 
@@ -43,7 +43,7 @@ SOFTWARE.
 
 // Auto-load modernism in Node.js environment
 if (typeof require !== 'undefined' && typeof module !== 'undefined') {
-    try { require("modernism"); } catch (e) { }
+    try { require("modernism"); } catch (e) {}
 }
 
 let _gb = _global ?? (typeof globalThis !== 'undefined') ? globalThis : (typeof window !== 'undefined' ? window : global);
@@ -62,10 +62,10 @@ dfg("N", NULL);
 dfg("T", TRUE);
 dfg("F", FALSE);
 
-dfg("u", _gb.undefined);
-dfg("n", _gb.null);
-dfg("t", _gb.true);
-dfg("f", _gb.false);
+dfg("u", undefined);
+dfg("n", null);
+dfg("t", true);
+dfg("f", false);
 
 // end point assigner constant
 dfg("eoo", _gb.u);
@@ -193,13 +193,15 @@ dfg("iop", _gb.isMap);
 
 dfg("xv", _gb.exact);
 dfg("nxv", _gb.notExact);
+dfg("xnv", _gb.exactlyNot);
 dfg("xm", _gb.exactMatches);
 dfg("nx", _gb.notExactMatches);
+dfg("xnm", _gb.exactlyNotMatches);
 
 dfg("ev", _gb.equals);
 dfg("nev", _gb.notEquals);
 dfg("sm", _gb.same);
-dfg("df", _gb.diffrent);
+dfg("df", _gb.different);
 
 dfg("gtv", _gb.getherThan);
 dfg("ltv", _gb.lessThan);
@@ -212,7 +214,7 @@ dfg("nge", _gb.notGetherAndEquals);
 dfg("nle", _gb.notLessAndEquals);
 
 dfg("fc", _gb.isFalseCase);
-dfg("nfc", _gb.isTrueCase);
+dfg("nfc", _gb.isNotFalseCase);
 
 dfg("xu", _gb.isUndefined);
 dfg("xn", _gb.isNull);
@@ -309,18 +311,18 @@ defineStaticGetterAndSetter(dt, "t", function () { return this.now(); });
 
 
 // additional global prototype functions
-definePropertyPlex("mc", function () { return matchCase(this.it, ...arguments); });
-definePropertyPlex("ec", function () { return equalCase(this.it, ...arguments); });
-definePropertyPlex("xc", function () { return exactCase(this.it, ...arguments); });
-definePropertyPlex("tc", function () { return typeCase(this.it, ...arguments); });
-definePropertyPlex("cc", function () { return classCase(this.it, ...arguments); });
-definePropertyPlex("kc", function () { return kindCase(this.it, ...arguments); });
+definePropertyPlex("mc", function () { return _gb.matchCase(this.it, ...arguments); });
+definePropertyPlex("ec", function () { return _gb.equalCase(this.it, ...arguments); });
+definePropertyPlex("xc", function () { return _gb.exactCase(this.it, ...arguments); });
+definePropertyPlex("tc", function () { return _gb.typeCase(this.it, ...arguments); });
+definePropertyPlex("cc", function () { return _gb.classCase(this.it, ...arguments); });
+definePropertyPlex("kc", function () { return _gb.kindCase(this.it, ...arguments); });
 
 definePropertyPlex("ee", function (process = it => it, ornot = it => it, numberEmptyMatch = 0) { return _gb.isEmpty(this.it, numberEmptyMatch) ? process(this.it) : ornot(this.it); });
 definePropertyPlex("ne", function (process = it => it, ornot = it => it, numberEmptyMatch = 0) { return _gb.isNotEmpty(this.it, numberEmptyMatch) ? process(this.it) : ornot(this.it); });
 
-definePropertyPlex("dr", function (does = (it, args) => { }, returns, args = []) { return _gb.doAndReturn(does, returns, [this.it, ...args]); });
-definePropertyPlex("drx", function (does = (it, args) => { }, forReturns, args = []) { return _gb.doAndReturnByExecute(does, forReturns, [this.it, ...args]); });
+definePropertyPlex("dr", function (does = (it, args) => {}, returns, args = []) { return _gb.doAndReturn(does, returns, [this.it, ...args]); });
+definePropertyPlex("drx", function (does = (it, args) => {}, forReturns, args = []) { return _gb.doAndReturnByExecute(does, forReturns, [this.it, ...args]); });
 
 defineGetterAndSetter(Object, "ok", function () { return _gb.keysOf(this.it); });
 defineGetterAndSetter(Object, "ov", function () { return _gb.valuesOf(this.it); });
@@ -333,12 +335,26 @@ defineProperty(Object, "fv", function (work = value => { return false; }) { retu
 defineProperty(Object, "fe", function (work = (key, value) => { return false; }) { return _gb.forkv(this.it.entire, work); });
 defineProperty(Object, "fkv", function (work = (key, value) => { return false; }) { return _gb.forkv(this.it.entire, work); });
 
+defineProperty(Object, "ko", function (value) { for (const [key, val] of this.it.entire) if (val === value) return key; return undefined; });
+
+defineProperty(Object, "tiw", function (key, process = (value, key, host) => value, ornot = (key, host) => host[key]) { return key in this.it ? process(this.it[key], key, this.it) : ornot(key, this.it); });
+
 defineProperty(Object, "cp", function (dataOnly = true, primitiveOnly = false, recusive = true) { return _gb.copy(this, dataOnly, primitiveOnly, recusive); });
+defineGetterAndSetter(Object, "mk", function () { return _gb.mock(this); });
+defineGetterAndSetter(Object, "mm", function () { return _gb.mimic(this); });
+defineGetterAndSetter(Object, "tw", function () { return _gb.twin(this); });
+defineGetterAndSetter(Object, "cl", function () { return _gb.clone(this); });
+
 defineProperty(Object, "pc", function (from, dataOnly = true, primitiveOnly = false, recusive = true, append = false) { return _gb.patch(this.it, from, dataOnly, primitiveOnly, recusive, append); });
+defineProperty(Object, "ow", function (from) { return _gb.overwrite(this.it, from); });
+defineProperty(Object, "to", function (from) { return _gb.takeover(this.it, from); });
+defineProperty(Object, "aq", function (from) { return _gb.acquire(this.it, from); });
+defineProperty(Object, "ih", function (from) { return _gb.inherit(this.it, from); });
+
 defineProperty(Object, "rv", function (from, dataOnly = true, primitiveOnly = false, recusive = true, exceptNew = false) { return _gb.revert(this.it, from, dataOnly, primitiveOnly, recusive, exceptNew); });
 
-definePropertyPlex("ifeq", function (that, process = it => it, ornot = it => { }) { return this.let(it => _gb.executeIf(it == that, process, [it], ornot)); });
-definePropertyPlex("ifneq", function (that, process = it => it, ornot = it => { }) { return this.let(it => _gb.executeIf(it != that, process, [it], ornot)); });
+definePropertyPlex("ifeq", function (that, process = it => it, ornot = it => {}) { return this.let(it => _gb.executeIf(it == that, process, [it], ornot)); });
+definePropertyPlex("ifneq", function (that, process = it => it, ornot = it => {}) { return this.let(it => _gb.executeIf(it != that, process, [it], ornot)); });
 
 
 

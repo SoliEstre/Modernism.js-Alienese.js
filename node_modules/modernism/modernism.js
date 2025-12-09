@@ -31,7 +31,7 @@ SOFTWARE.
 // Collections of bypass for process codes takes be inline,
 // and monkey patching like as modern languages.
 // 
-// v0.4.3    / release 2025.11.24
+// v0.5.0    / release 2025.12.09
 // 
 // Author: Estre Soliette
 // Established: 2025.01.05
@@ -85,11 +85,11 @@ defineGlobal("FINALLY", "finally");
 
 
 // bypass constant
-defineGlobal("executeIf", (bool, work = () => { }, args = [], ornot = () => { }) => {
+defineGlobal("executeIf", (bool, work = () => {}, args = [], ornot = () => {}) => {
     if (bool) return work(...args);
     else return ornot(...args);
 });
-defineGlobal("executeWhen", (args = [], isTrue = args => 1 == "0", work = args => { }, ornot = () => { }) => {
+defineGlobal("executeWhen", (args = [], isTrue = args => 1 == "0", work = args => {}, ornot = () => {}) => {
     if (isTrue(...args)) return work(...args);
     else return ornot(...args);
 });
@@ -106,24 +106,24 @@ defineGlobal("valet", (value, process = it => it) => process(value));
 
 // common process shortcut constant
 defineGlobal("forZeroToBefore", (toward, work = i => { return false; }) => {
-    for (let i = 0; i < toward; i++) if (work(i)) break;
+    for (let i=0; i<toward; i++) if (work(i)) break;
 });
 defineGlobal("forZeroToReach", (toward, work = i => { return false; }) => {
-    for (let i = 0; i <= toward; i++) if (work(i)) break;
+    for (let i=0; i<=toward; i++) if (work(i)) break;
 });
 
 defineGlobal("forToZeroFrom", (begins, work = i => { return false; }) => {
-    for (let i = begins; i >= 0; i--) if (work(i)) break;
+    for (let i=begins; i>=0; i--) if (work(i)) break;
 });
 defineGlobal("forToPrimeFrom", (begins, work = i => { return false; }) => {
-    for (let i = begins; i > 0; i--) if (work(i)) break;
+    for (let i=begins; i>0; i--) if (work(i)) break;
 });
 
 defineGlobal("forForward", (from, work = i => { return false; }) => {
-    for (let i = 0; i < from.length; i++) if (work(i, from[i])) break;
+    for (let i=0; i<from.length; i++) if (work(i, from[i])) break;
 });
 defineGlobal("forBackward", (from, work = i => { return false; }) => {
-    for (let i = from.length - 1; i >= 0; i--) if (work(i, from[i])) break;
+    for (let i=from.length-1; i>=0; i--) if (work(i, from[i])) break;
 });
 
 defineGlobal("forin", (from, work = (k, v) => { return false; }) => {
@@ -162,76 +162,89 @@ defineGlobal("doWhileIn", function (cond = function (self) { return true; }, wor
 
 
 // meaning comparator constant
-defineGlobal("typeOf", it => {
-    if (it === null) return "null";
-    return typeof it;
-});
+defineGlobal("typeOf", it => it === null ? NULL : typeof it);
 
 defineGlobal("typeMatch", (it, type) => typeOf(it) == type);
 
-defineGlobal("typeUndefined", it => typeOf(it) == "undefined");
-defineGlobal("typeFunction", it => typeOf(it) == "function");
-defineGlobal("typeBoolean", it => typeOf(it) == "boolean");
-defineGlobal("typeString", it => typeOf(it) == "string");
-defineGlobal("typeSymbol", it => typeOf(it) == "symbol");
-defineGlobal("typeNumber", it => typeOf(it) == "number");
-defineGlobal("typeBigint", it => typeOf(it) == "bigint");
-defineGlobal("typeObject", it => typeOf(it) == "object");
+defineGlobal("typeUndefined", it => typeMatch(it, UNDEFINED));
+defineGlobal("typeFunction", it => typeMatch(it, FUNCTION));
+defineGlobal("typeBoolean", it => typeMatch(it, BOOLEAN));
+defineGlobal("typeString", it => typeMatch(it, STRING));
+defineGlobal("typeSymbol", it => typeMatch(it, SYMBOL));
+defineGlobal("typeNumber", it => typeMatch(it, NUMBER));
+defineGlobal("typeBigint", it => typeMatch(it, BIGINT));
+defineGlobal("typeObject", it => typeMatch(it, OBJECT));
+defineGlobal("typeNull", it => typeMatch(it, NULL));
 
-defineGlobal("instanceMatch", (it, cls) => it instanceof cls);
-defineGlobal("isObject", it => typeObject(it) && it !== null);
-defineGlobal("isArray", Array.isArray);
-defineGlobal("isString", it => typeString(it));
-defineGlobal("isNumber", it => typeNumber(it));
+defineGlobal("instanceMatch", (it, cls = Object) => it instanceof cls);
+defineGlobal("isObject", it => instanceMatch(it) && it !== null);
+defineGlobal("isArray", it => instanceMatch(it, Array));
+defineGlobal("isString", it => instanceMatch(it, String));
+defineGlobal("isNumber", it => instanceMatch(it, Number));
 defineGlobal("isSet", it => instanceMatch(it, Set));
 defineGlobal("isMap", it => instanceMatch(it, Map));
 
-defineGlobal("exact", (a, b) => a === b);
-defineGlobal("notExact", (a, b) => a !== b);
-defineGlobal("exactMatches", (a, ...b) => b.includes(a));
-defineGlobal("notExactMatches", (a, ...b) => !b.includes(a));
+defineGlobal("same", (a, b) => JSON.stringify(a) === JSON.stringify(b));
+defineGlobal("different", (a, b) => JSON.stringify(a) !== JSON.stringify(b));
+
+defineGlobal("exact", (...values) => values.reduce((accrue, value, index, array) => array[index-1] === value ? true : array.splice(index + 1) && false));
+defineGlobal("notExact", (...values) => values.reduce((accrue, value, index, array) => array[index-1] !== value ? !(array.splice(index + 1) && false) : false));
+defineGlobal("exactlyNot", (...values) => { let match = undefined; forToPrimeFrom(values.length - 1, i => !(match = values.includes(values.pop()))); return !match; });
+defineGlobal("exactMatches", _global.exact);
+defineGlobal("notExactMatches", _global.notExact);
+defineGlobal("exactlyNotMatches", _global.exactlyNot);
 
 defineGlobal("equals", (a, b) => a == b);
 defineGlobal("notEquals", (a, b) => a != b);
-defineGlobal("same", (a, b) => JSON.stringify(a) === JSON.stringify(b));
-defineGlobal("diffrent", (a, b) => !same(a, b));
 
 defineGlobal("getherThan", (a, b) => a > b);
 defineGlobal("lessThan", (a, b) => a < b);
 defineGlobal("notGetherThan", (a, b) => !(a > b));
 defineGlobal("notLessThan", (a, b) => !(a < b));
+
 defineGlobal("getherOrEquals", (a, b) => a >= b);
 defineGlobal("lessOrEquels", (a, b) => a <= b);
-
 defineGlobal("notGetherAndEquals", (a, b) => !(a >= b));
 defineGlobal("notLessAndEquals", (a, b) => !(a <= b));
+
 defineGlobal("isFalseCase", it => !it);
 defineGlobal("isTrueCase", it => !!it);
+defineGlobal("isNotFalseCase", it => !!it);
 
 defineGlobal("isUndefined", it => it === undefined);
 defineGlobal("isNull", it => it === null);
 defineGlobal("isExactTrue", it => it === true);
 defineGlobal("isExactFalse", it => it === false);
-defineGlobal("isNotUndefined", it => it !== undefined);
 
+defineGlobal("isNotUndefined", it => it !== undefined);
 defineGlobal("isNotNull", it => it !== null);
 defineGlobal("isNotTrue", it => it !== true);
 defineGlobal("isNotFalse", it => it !== false);
 
-defineGlobal("isNully", it => it === undefined || it === null);
-defineGlobal("isTruely", it => !!it);
-defineGlobal("isFalsely", it => !it);
-defineGlobal("isEmpty", (it, numberEmptyMatch = 0) => {
-    if (isNully(it)) return true;
-    if (typeString(it) || isArray(it)) return it.length === 0;
-    if (isObject(it)) return Object.keys(it).length === 0;
-    if (typeNumber(it)) return it === numberEmptyMatch;
-    return false;
-});
+defineGlobal("isNully", it => it == null);
+defineGlobal("isTruely", it => it == true);
+defineGlobal("isFalsely", it => it == false);
+defineGlobal("isEmpty", (it, numberEmptyMatch = 0) => typeCase(it, {
+    [UNDEFINED]: _ => true,
+    [NULL]: _ => true,
+    [BOOLEAN]: v => !!v <= numberEmptyMatch,
+    [NUMBER]: v => v <= numberEmptyMatch,
+    [BIGINT]: v => v <= numberEmptyMatch,
+    [STRING]: v => v.length <= numberEmptyMatch,
+    [DEFAULT]: v => {
+        const keys = Object.keys(v);
+        if (keys.includes("length") && Number.isInteger(v.length)) return v.length <= numberEmptyMatch;
+        if (keys.includes("size")) {
+            const size = typeFunction(v.size) ? v.size() : v.size;
+            if (Number.isInteger(size)) return size <= numberEmptyMatch;
+        }
+        return keys.length <= numberEmptyMatch
+    },
+}));
 
-defineGlobal("isNotNully", it => !isNully(it));
-defineGlobal("isNotTruely", it => !isTruely(it));
-defineGlobal("isNotFalsely", it => !isFalsely(it));
+defineGlobal("isNotNully", it => it != null);
+defineGlobal("isNotTruely", it => it != true);
+defineGlobal("isNotFalsely", it => it != false);
 defineGlobal("isNotEmpty", (it, numberEmptyMatch = 0) => !isEmpty(it, numberEmptyMatch));
 
 defineGlobal("isNullOrEmpty", (it, numberEmptyMatch = 0) => isNully(it) || isEmpty(it, numberEmptyMatch));
@@ -239,13 +252,13 @@ defineGlobal("isNotNullAndEmpty", (it, numberEmptyMatch = 0) => isNotNully(it) &
 
 
 // quick execute by conditions constant
-defineGlobal("ifNullOrEmpty", (val, work = () => { }, ornot = () => { }) => executeIf(isNullOrEmpty(val), work, [], ornot));
-defineGlobal("ifNotNullAndEmpty", (val, work = () => { }, ornot = () => { }) => executeIf(isNotNullAndEmpty(val), work, [], ornot));
+defineGlobal("ifNullOrEmpty", (val, work = () => {}, ornot = () => {}, numberEmptyMatch = 0) => executeIf(isNullOrEmpty(val, numberEmptyMatch), work, [], ornot));
+defineGlobal("ifNotNullAndEmpty", (val, work = () => {}, ornot = () => {}, numberEmptyMatch = 0) => executeIf(isNotNullAndEmpty(val, numberEmptyMatch), work, [], ornot));
 
 
 // do and return inline double takes
-defineGlobal("doAndReturn", (does = (it) => { }, returns, args = []) => { does(...args); return returns; });
-defineGlobal("doAndReturnByExecute", (does = (it) => { }, forReturns = () => { }, args = []) => { does(...args); return forReturns(); });
+defineGlobal("doAndReturn", (does = (...args) => {}, returns, args = []) => { does(...args); return returns; });
+defineGlobal("doAndReturnByExecute", (does = (...args) => {}, forReturns = (...args) => {}, args = []) => { does(...args); return forReturns(...arg); });
 
 
 // object method shortcut constant
@@ -266,7 +279,7 @@ defineGlobal("checkCount", (object, checker = (k, v) => true) => {
 
 
 // match case constant
-defineGlobal("matchCase", (val, cases = { [DEFAULT]: val => { }, [FINALLY]: (val, returns) => { } }, ignoreCase = false) => {
+defineGlobal("matchCase", (val, cases = { [DEFAULT]: val => {}, [FINALLY]: (val, returns) => {} }, ignoreCase = false) => {
     let match;
     forin(cases, (k, v) => executeIf(k != DEFAULT && rx(k, ignoreCase ? "i" : "").test(val), () => doAndReturn(() => match = v, true)));
     const defaultCase = cases[DEFAULT];
@@ -275,17 +288,17 @@ defineGlobal("matchCase", (val, cases = { [DEFAULT]: val => { }, [FINALLY]: (val
     const returnFinal = typeFunction(finallyCase) ? finallyCase(val, returns) : finallyCase;
     return isUndefined(returnFinal) ? returns : returns ?? returnFinal;
 });
-defineGlobal("equalCase", (val, cases = { [DEFAULT]: val => { }, [FINALLY]: (val, returns) => { } }, ignoreCase = false) => {
+defineGlobal("equalCase", (val, cases = { [DEFAULT]: val => {}, [FINALLY]: (val, returns) => {} }, ignoreCase = false) => {
     let match;
-    const vlc = to(val) == STRING ? val.toLowerCase() : val;
-    forin(cases, (k, v) => executeIf(k != DEFAULT && (ignoreCase ? (to(k) == STRING ? k.toLowerCase() : k) == vlc : k == val), () => doAndReturn(() => match = v, true)));
+    const vlc = typeOf(val) == STRING ? val.toLowerCase() : val;
+    forin(cases, (k, v) => executeIf(k != DEFAULT && (ignoreCase ? (typeOf(k) == STRING ? k.toLowerCase() : k) == vlc : k == val), () => doAndReturn(() => match = v, true)));
     const defaultCase = cases[DEFAULT];
     const finallyCase = cases[FINALLY];
     const returns = isNotNully(match) ? (typeFunction(match) ? match(val) : match) : (typeFunction(defaultCase) ? defaultCase(val) : defaultCase);
     const returnFinal = typeFunction(finallyCase) ? finallyCase(val, returns) : finallyCase;
     return isUndefined(returnFinal) ? returns : returns ?? returnFinal;
 });
-defineGlobal("exactCase", (val, cases = { [DEFAULT]: val => { }, [FINALLY]: (val, returns) => { } }) => {
+defineGlobal("exactCase", (val, cases = { [DEFAULT]: val => {}, [FINALLY]: (val, returns) => {} }) => {
     const match = cases[val];
     const defaultCase = cases[DEFAULT];
     const finallyCase = cases[FINALLY];
@@ -293,8 +306,8 @@ defineGlobal("exactCase", (val, cases = { [DEFAULT]: val => { }, [FINALLY]: (val
     const returnFinal = typeFunction(finallyCase) ? finallyCase(val, returns) : finallyCase;
     return isUndefined(returnFinal) ? returns : returns ?? returnFinal;
 });
-defineGlobal("typeCase", (variable, cases = { [DEFAULT]: variable => { }, [FINALLY]: (variable, returns) => { } }) => {
-    const type = to(variable);
+defineGlobal("typeCase", (variable, cases = { [DEFAULT]: variable => {}, [FINALLY]: (variable, returns) => {} }) => {
+    const type = typeOf(variable);
     const match = cases[type];
     const defaultCase = cases[DEFAULT];
     const finallyCase = cases[FINALLY];
@@ -302,7 +315,7 @@ defineGlobal("typeCase", (variable, cases = { [DEFAULT]: variable => { }, [FINAL
     const returnFinal = typeFunction(finallyCase) ? finallyCase(variable, returns) : finallyCase;
     return isUndefined(returnFinal) ? returns : returns ?? returnFinal;
 });
-defineGlobal("classCase", (object, cases = { [DEFAULT]: object => { }, [FINALLY]: (object, returns) => { } }) => {
+defineGlobal("classCase", (object, cases = { [DEFAULT]: object => {}, [FINALLY]: (object, returns) => {} }) => {
     const className = object.constructor.name;
     const match = cases[className];
     const defaultCase = cases[DEFAULT];
@@ -311,7 +324,7 @@ defineGlobal("classCase", (object, cases = { [DEFAULT]: object => { }, [FINALLY]
     const returnFinal = typeFunction(finallyCase) ? finallyCase(object, returns) : finallyCase;
     return isUndefined(returnFinal) ? returns : returns ?? returnFinal;
 });
-defineGlobal("kindCase", (kindFrom, cases = { [DEFAULT]: val => { }, [FINALLY]: val => { val, returns } }) => typeCase(kindFrom, { ...cases, [OBJECT]: () => classCase(kindFrom, { ...cases, [FINALLY]: undefined }) }));
+defineGlobal("kindCase", (kindFrom, cases = { [DEFAULT]: val => {}, [FINALLY]: val => { val, returns } }) => typeCase(kindFrom, { ...cases, [OBJECT]: () => classCase(kindFrom, { ...cases, [FINALLY]: undefined }) }));
 
 
 /** variable data copy */
@@ -464,8 +477,8 @@ definePropertyPlex("kindCase", function () { return kindCase(this.it, ...argumen
 definePropertyPlex("ifEmpty", function (process = it => it, ornot = it => it, numberEmptyMatch = 0) { return isEmpty(this.it, numberEmptyMatch) ? process(this.it) : ornot(this.it); });
 definePropertyPlex("ifNotEmpty", function (process = it => it, ornot = it => it, numberEmptyMatch = 0) { return isNotEmpty(this.it, numberEmptyMatch) ? process(this.it) : ornot(this.it); });
 
-definePropertyPlex("doAndReturn", function (does = (it, args) => { }, returns, args = []) { return doAndReturn(does, returns, [this.it, ...args]); });
-definePropertyPlex("doAndReturnByExecute", function (does = (it, args) => { }, forReturns, args = []) { return doAndReturnByExecute(does, forReturns, [this.it, ...args]); });
+definePropertyPlex("doAndReturn", function (does = (it, args) => {}, returns, args = []) { return doAndReturn(does, returns, [this.it, ...args]); });
+definePropertyPlex("doAndReturnByExecute", function (does = (it, args) => {}, forReturns, args = []) { return doAndReturnByExecute(does, forReturns, [this.it, ...args]); });
 
 defineGetterAndSetter(Object, "ways", function () { return keysOf(this.it); });
 defineGetterAndSetter(Object, "looks", function () { return valuesOf(this.it); });
@@ -482,16 +495,20 @@ defineProperty(Object, "forEntire", function (work = (key, value) => { return fa
 
 defineProperty(Object, "keyOf", function (value) { for (const [key, val] of this.it.entire) if (val === value) return key; return undefined; });
 
+defineProperty(Object, "takeIfWayOf", function (key, process = (value, key, host) => value, ornot = (key, host) => host[key]) { return key in this.it ? process(this.it[key], key, this.it) : ornot(key, this.it); });
+
 defineProperty(Object, "copy", function (dataOnly = true, primitiveOnly = false, recusive = true) { return copy(this, dataOnly, primitiveOnly, recusive); });
 defineGetterAndSetter(Object, "mock", function () { return mock(this); });
 defineGetterAndSetter(Object, "mimic", function () { return mimic(this); });
 defineGetterAndSetter(Object, "twin", function () { return twin(this); });
 defineGetterAndSetter(Object, "clone", function () { return clone(this); });
+
 defineProperty(Object, "patch", function (from, dataOnly = true, primitiveOnly = false, recusive = true, append = false) { return patch(this.it, from, dataOnly, primitiveOnly, recusive, append); });
 defineProperty(Object, "overwrite", function (from) { return overwrite(this.it, from); });
 defineProperty(Object, "takeover", function (from) { return takeover(this.it, from); });
 defineProperty(Object, "acquire", function (from) { return acquire(this.it, from); });
 defineProperty(Object, "inherit", function (from) { return inherit(this.it, from); });
+
 defineProperty(Object, "revert", function (from, dataOnly = true, primitiveOnly = false, recusive = true, exceptNew = false) { return revert(this.it, from, dataOnly, primitiveOnly, recusive, exceptNew); });
 
 // dpx("apply", function (process = it => it) { process.bind(this)(); return this.it; });
@@ -501,10 +518,10 @@ definePropertyPlex("let", function (process = it => it) { return process(this.it
 definePropertyPlex("wait", async function (process = async it => it) { return await process(this.it); });
 definePropertyPlex("go", function (asyncProcess = (resolve, reject) => resolve(this.it)) { return new Promise(asyncProcess); });
 
-definePropertyPlex("if", function (bool, process = it => it, ornot = it => { }) { return executeIf(bool, process, [this.it], ornot); });
+definePropertyPlex("if", function (bool, process = it => it, ornot = it => {}) { return executeIf(bool, process, [this.it], ornot); });
 
-definePropertyPlex("ifis", function (that, process = it => it, ornot = it => { }) { return this.let(it => executeIf(it === that, process, [it], ornot)); });
-definePropertyPlex("ifisnt", function (that, process = it => it, ornot = it => { }) { return this.let(it => executeIf(it !== that, process, [it], ornot)); });
+definePropertyPlex("ifis", function (that, process = it => it, ornot = it => {}) { return this.let(it => executeIf(it === that, process, [it], ornot)); });
+definePropertyPlex("ifisnt", function (that, process = it => it, ornot = it => {}) { return this.let(it => executeIf(it !== that, process, [it], ornot)); });
 
-definePropertyPlex("ifEquals", function (that, process = it => it, ornot = it => { }) { return this.let(it => executeIf(it == that, process, [it], ornot)); });
-definePropertyPlex("ifNotEquals", function (that, process = it => it, ornot = it => { }) { return this.let(it => executeIf(it != that, process, [it], ornot)); });
+definePropertyPlex("ifEquals", function (that, process = it => it, ornot = it => {}) { return this.let(it => executeIf(it == that, process, [it], ornot)); });
+definePropertyPlex("ifNotEquals", function (that, process = it => it, ornot = it => {}) { return this.let(it => executeIf(it != that, process, [it], ornot)); });
