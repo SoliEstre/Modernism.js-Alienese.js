@@ -1,6 +1,6 @@
 {
     "name": "alienese",
-    "version": "0.5.0",
+    "version": "0.5.1",
     "description": "Alienise.js - Estre javscript Alienese patch",
     "main": "alienese.js",
     "dependencies": {
