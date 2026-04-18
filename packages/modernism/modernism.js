@@ -31,13 +31,19 @@ SOFTWARE.
 // Collections of bypass for process codes takes be inline,
 // and monkey patching like as modern languages.
 // 
-// v0.7.1    / release 2026.03.31
+// v0.7.2    / release 2026.04.18
 // 
 // Author: Estre Soliette
 // Established: 2025.01.05
 
 
+/** @type {Object} Global object (globalThis / window / global). */
 const _global = (typeof globalThis !== 'undefined') ? globalThis : (typeof window !== 'undefined' ? window : global);
+/**
+ * Defines a read-only global constant.
+ * @param {string} name - Global property name.
+ * @param {*} value - Value.
+ */
 const defineGlobal = (name, value) => Object.defineProperty(_global, name, {
     value: value,
     writable: false,
@@ -85,7 +91,15 @@ const DEFAULT = "default";
 const FINALLY = "finally";
 
 
-// bypass constant
+// bypass constant — conditional execution utilities
+/**
+ * Executes work if condition is true, ornot if false.
+ * @param {boolean} bool - Condition.
+ * @param {Function} [work] - Function to execute when true.
+ * @param {Array} [args=[]] - Arguments to pass to work/ornot.
+ * @param {Function} [ornot] - Function to execute when false.
+ * @returns {*} Execution result.
+ */
 const executeIf = (bool, work = () => {}, args = [], ornot = () => {}) => {
     if (bool) return work(...args);
     else return ornot(...args);
@@ -222,9 +236,18 @@ const isNotNull = it => it !== null;
 const isNotTrue = it => it !== true;
 const isNotFalse = it => it !== false;
 
+/** Checks whether the value is null or undefined. @param {*} it @returns {boolean} */
 const isNully = it => it == null;
+/** Checks whether the value is truthy. @param {*} it @returns {boolean} */
 const isTruely = it => it == true;
+/** Checks whether the value is falsy. @param {*} it @returns {boolean} */
 const isFalsely = it => it == false;
+/**
+ * Checks whether the value is empty by type. undefined/null → true, string → length, array/object → length/size/keys.
+ * @param {*} it - Value to check.
+ * @param {number} [numberEmptyMatch=0] - Values at or below this number are considered empty.
+ * @returns {boolean}
+ */
 const isEmpty = (it, numberEmptyMatch = 0) => typeCase(it, {
     [UNDEFINED]: _ => true,
     [NULL]: _ => true,
@@ -243,12 +266,21 @@ const isEmpty = (it, numberEmptyMatch = 0) => typeCase(it, {
     },
 });
 
+/** Checks whether the value is not null/undefined. @param {*} it @returns {boolean} */
 const isNotNully = it => it != null;
 const isNotTruely = it => it != true;
 const isNotFalsely = it => it != false;
+/** Checks whether the value is not empty. @param {*} it @param {number} [numberEmptyMatch=0] @returns {boolean} */
 const isNotEmpty = (it, numberEmptyMatch = 0) => !isEmpty(it, numberEmptyMatch);
 
+/** Checks whether the value is null or empty. @param {*} it @param {number} [numberEmptyMatch=0] @returns {boolean} */
 const isNullOrEmpty = (it, numberEmptyMatch = 0) => isNully(it) || isEmpty(it, numberEmptyMatch);
+/**
+ * Checks whether the value is not null and not empty. Aliased as `nne()` in alienese.
+ * @param {*} it - Value to check.
+ * @param {number} [numberEmptyMatch=0] - Values at or below this number are considered empty.
+ * @returns {boolean} true if the value is meaningful.
+ */
 const isNotNullAndEmpty = (it, numberEmptyMatch = 0) => isNotNully(it) && isNotEmpty(it, numberEmptyMatch);
 
 
@@ -442,15 +474,24 @@ const revert = (to, from, dataOnly = true, primitiveOnly = false, recusive = tru
 };
 
 
-/** run handle */
+/** run handle — async execution utilities */
+/** Schedules a task on the microtask queue via setTimeout(process, 0). @param {Function} process @param {...*} args @returns {number} timer ID */
 const postQueue = (process = (...args) => args[0], ...args) => setTimeout(process, 0, ...args);
+/** Delayed execution via setTimeout(process, delay). @param {Function} process @param {number} [delay=100] @param {...*} args @returns {number} */
 const postDelayed = (process = (...args) => args[0], delay = 100, ...args) => setTimeout(process, delay, ...args);
+/** Wraps process(resolve, reject, ...args) in a Promise. @param {Function} process @param {...*} args @returns {Promise<*>} */
 const postPromise = (process = (rs, rj, ...args) => rs(args[0]), ...args) => new Promise((rs, rj) => process(rs, rj, ...args));
+/** Executes a Promise after a delay. @param {Function} process @param {number} [delay=100] @param {...*} args @returns {Promise<*>} */
 const postBonded = (process = (rs, rj, ...args) => rs(args[0]), delay = 100, ...args) => new Promise((rs, rj) => setTimeout(process, delay, rs, rj, ...args));
+/** setTimeout(0) + Promise combination. @param {Function} process @param {...*} args @returns {Promise<*>} */
 const postPromiseQueue = (process = (rs, rj, ...args) => rs(args[0]), ...args) => new Promise((rs, rj) => setTimeout(process, 0, rs, rj, ...args));
+/** Immediately executes an async function. @param {Function} process @param {...*} args @returns {Promise<*>} */
 const postAsyncQueue = (process = async (...args) => args[0], ...args) => process(...args);
+/** Executes an async function with await. @param {Function} process @param {...*} args @returns {Promise<*>} */
 const postAwaitQueue = async (process = async (...args) => args[0], ...args) => await process(...args);
+/** Executes on the next frame via requestAnimationFrame. @param {Function} process @param {...*} args @returns {number} */
 const postFrameQueue = (process = (...args) => args[0], ...args) => requestAnimationFrame(() => process(...args));
+/** requestAnimationFrame + Promise combination. @param {Function} process @param {...*} args @returns {Promise<*>} */
 const postFramePromise = (process = (rs, rj, ...args) => rs(args[0]), ...args) => new Promise((rs, rj) => requestAnimationFrame(() => process(rs, rj, ...args)));
 
 

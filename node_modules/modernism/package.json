@@ -1,6 +1,6 @@
 {
     "name": "modernism",
-    "version": "0.7.1",
+    "version": "0.7.2",
     "description": "Modernism.js - Estre Modernism javscript patch",
     "main": "modernism.js",
     "scripts": {
