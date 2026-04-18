@@ -32,7 +32,7 @@ SOFTWARE.
 // This patch aims to create smaller (quicker) and more concise (lighter) JavaScript code.
 // It makes the code more implicit and serves as an alternative to obfuscation.
 // 
-// v0.7.2 / release 2026.04.18
+// v0.7.3 / release 2026.04.18
 // 
 // * Must be loaded modernism.js before this script.
 // 
